@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+
+"""
+PARTNERS WITH DREW MELOHN
+
+Show each broken links text
+run at 7 am every day
+take in web address as command line arg
+if there are bad links write to "~/.links/bad-links.txt" if no bad links, delete the file
+sample web address(es) "http://10.92.21.106:8008/" or "http://10.92.21.106:8008/president/"
+"""
+
+import requests, shutil, os
+from bs4 import BeautifulSoup
+from sys import argv
+from pathlib import Path
+
+r = requests.get(argv[-1])
+
+links_path = Path('/home/andedyl/.links/bad-links.txt')
+dir_path = Path('/home/andedyl/.links/')
+
+if r.status_code == 404:
+    print('The web address no worky')
+else:
+    soup = BeautifulSoup(r.text, features="html.parser")
+    links = soup.find_all('a')
+
+    #Initialize an empty list to hold the broken links
+    broken_links = []
+
+    #Test the links to see if they broke or not
+    for link in links:
+        span = str(link).split('"')[1]
+        if 'http' not in link:
+            test = requests.get(argv[-1] + span)
+        else:
+            test = requests.get(link)
+
+        if test.status_code == 404:
+            broken_links.append(link)
+
+    if links_path.is_file() and not broken_links:
+        #File exists and no broken links were found so delete the file/directory
+        shutil.rmtree(dir_path)
+    elif broken_links: 
+        if not dir_path.exists():
+            os.mkdir(dir_path)
+        #Write the broken links to "bad-links.txt"
+        with open(links_path, 'w') as txt:
+            for link in broken_links:
+                txt.write(str(link) + '\n')
+
+    #Clear broken_links just to be safe
+    broken_links.clear()

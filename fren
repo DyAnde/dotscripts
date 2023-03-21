@@ -1,0 +1,40 @@
+#!/bin/bash
+
+w | grep meloand > /dev/null
+if [ $? -eq 0 ] ; then
+	dOn=true
+else
+	dOn=false
+fi
+
+w | grep reusnat > /dev/null
+if [ $? -eq 0 ] ; then
+	nOn=true
+else
+	nOn=false
+fi
+
+w | grep burckat > /dev/null
+if [ $? -eq 0 ] ; then
+	kOn=true
+else
+	kOn=false
+fi
+
+if [[ $dOn = true && $nOn = true && $kOn = true ]] ; then
+	echo "Drew, Nate, and Kat are on"
+elif [[ $dOn = true && $nOn = true && $kOn = false ]] ; then
+	echo "Drew and Nate are on, but Kat isn't"
+elif [[ $dOn = true && $nOn = false && $kOn = false ]] ; then
+	echo "Only Drew is on"
+elif [[ $dOn = true && $nOn = false && $kOn = true ]] ; then
+	echo "Drew and Kat are on, but Nate isn't"
+elif [[ $dOn = false && $nOn = false && $kOn = true ]] ; then
+	echo "Only Kat is on"
+elif [[ $dOn = false && $nOn = true && $kOn = true ]] ; then
+	echo "Nate and Kat are on, but Drew isn't"
+elif [[ $dOn = false && $nOn = true && $kOn = false ]] ; then
+	echo "Only Nate is on"
+else
+	echo "Nobody is on"
+fi
