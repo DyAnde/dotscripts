@@ -4,7 +4,7 @@ SRCS = fren check-links
 
 link: ${SRCS}
 	for script in ${SRCS}; do \
-		ln -s "~/.scripts/$$script" ~/bin/$$script ;\
+		ln -s ~/.scripts/$$script ~/bin/$$script ;\
 	done 
 
 unlink: ${SRCS}
