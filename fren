@@ -21,6 +21,24 @@ else
 	kOn=false
 fi
 
+if [[ $# -eq 1 ]] ; then
+	name=$1
+	if [[ $name == "Drew" || $name == "meloand" && $dOn = true ]] ; then
+		echo "Drew is on"
+		exit
+	elif [[ $name == "Nate" || $name == "reusnat" && $nOn = true ]] ; then
+		echo "Nate is on"
+		exit
+	elif [[ $name == "Kat" || $name == "burckat" && $kOn = true ]] ; then
+		echo "Kat is on"
+		exit
+	else
+		echo "$name is not valid"
+		exit
+	fi
+fi
+
+
 if [[ $dOn = true && $nOn = true && $kOn = true ]] ; then
 	echo "Drew, Nate, and Kat are on"
 elif [[ $dOn = true && $nOn = true && $kOn = false ]] ; then
